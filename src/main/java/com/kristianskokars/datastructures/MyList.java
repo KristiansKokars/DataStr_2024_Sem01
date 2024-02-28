@@ -99,7 +99,6 @@ public class MyList {
     }
 
     public void print() {
-        System.out.println(array[2]);
         for (int number : array) {
             System.out.print(String.format("%d ", number));
         }
