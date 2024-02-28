@@ -1,24 +1,30 @@
 package com.kristianskokars.datastructures;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 
-public class MyList {
+public class MyGenericList<T> {
     private final int LIST_DEFAULT_SIZE = 10;
-    private int[] array;
+    private final Class<T> clazz;
+    private T[] array;
     private int size = LIST_DEFAULT_SIZE;
     private int count;
 
-    public MyList() {
-        array = new int[size];
+    public MyGenericList(Class<T> clazz) {
+        this.clazz = clazz;
+        array = createNewArray(size);
         count = 0;
     }
 
-    public MyList(int size) throws IllegalArgumentException {
+    public MyGenericList(Class<T> clazz, int size) {
         if (size <= 0) throw new IllegalArgumentException("Invalid array size");
 
+        this.clazz = clazz;
         this.size = size;
-        array = new int[size];
+        array = createNewArray(size);
         count = 0;
     }
 
@@ -35,49 +41,43 @@ public class MyList {
     }
 
     public void doubleArray() {
-        int[] newArray = new int[size * 2];
+        T[] newArray = createNewArray(size);
         size = size * 2;
 
-//        for (int i = 0; i < array.length; i++) {
-//            newArray[i] = array[i];
-//        }
         System.arraycopy(array, 0, newArray, 0, array.length);
         array = newArray;
-        System.gc(); // teacher wanted it
     }
 
-    public void push(int number) {
-        if (count == size) {
-            doubleArray();
-        };
+    public void push(T number) {
+        if (count == size) return;
 
         array[count] = number;
         count++;
     }
 
     // TODO: I do not remember if you could do direct [] overloading in Java
-    public void addAtIndex(int index, int number) {
-        if (isInvalidIndex(index) || index > count) return;
+    public void addAtIndex(int index, T number) {
+        if (isInvalidIndex(index)) return;
 
         array[index] = number;
     }
 
-    public void deleteAtIndex(int index, int number) {
+    public void deleteAtIndex(int index, T element) {
         // TODO: not sure what behaviour to do here for the task: throw or just do nothing?
         if (isInvalidIndex(index)) return;
 
-        array[index] = 0; // 0 is by default the empty value
+        array[index] = null; // NullPointerExceptions here I come
     }
 
-    public int getAtIndex(int index) throws ArrayIndexOutOfBoundsException {
+    public T getAtIndex(int index) {
         if (isInvalidIndex(index)) throw new ArrayIndexOutOfBoundsException();
 
         return array[index];
     }
 
-    public int findNumber(int number) {
+    public int findElement(T element) {
         for (int i = 0; i < size; i++) {
-            if (array[i] == number) {
+            if (array[i] == element) {
                 return i;
             }
         }
@@ -85,31 +85,38 @@ public class MyList {
         return -1;
     }
 
-    public int returnNextElement(int number) {
+    @Nullable
+    public T returnNextElement(T element) {
         for (int i = 0; i < size; i++) {
-            if (array[i] == number && i != size - 1) {
+            if (array[i] == element && i != size - 1) {
                 return array[i + 1];
             }
         }
 
-        return -1;
+        return null;
     }
 
     public void sort() {
-        array = Arrays.stream(array).sorted().toArray();
+        array = (T[]) Arrays.stream(array).sorted().toArray();
     }
 
     public void print() {
-        for (int number : array) {
-            System.out.print(String.format("%d ", number));
+        System.out.println(array[2]);
+        for (T element : array) {
+            System.out.print(String.format("%d ", element));
         }
     }
 
     public void empty() {
-        array = new int[size];
+        array = createNewArray(size);
     }
 
     private boolean isInvalidIndex(int index) {
         return index > size - 1 || index < 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private T[] createNewArray(int size) {
+        return (T[]) Array.newInstance(clazz, size);
     }
 }
