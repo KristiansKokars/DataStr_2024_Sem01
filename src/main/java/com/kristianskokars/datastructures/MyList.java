@@ -43,6 +43,7 @@ public class MyList {
 //        }
         System.arraycopy(array, 0, newArray, 0, array.length);
         array = newArray;
+        System.gc(); // teacher wanted it
     }
 
     public void push(int number) {
