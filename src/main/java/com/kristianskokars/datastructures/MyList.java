@@ -4,11 +4,19 @@ import java.util.Arrays;
 
 
 public class MyList {
+    private final int LIST_DEFAULT_SIZE = 10;
     private int[] array;
-    private int size;
+    private int size = LIST_DEFAULT_SIZE;
     private int count;
 
+    public MyList() {
+        array = new int[size];
+        count = 0;
+    }
+
     public MyList(int size) {
+        if (size <= 0) throw new IllegalArgumentException("Invalid array size");
+
         this.size = size;
         array = new int[size];
         count = 0;
@@ -38,7 +46,9 @@ public class MyList {
     }
 
     public void push(int number) {
-        if (count == size) return;
+        if (count == size) {
+            doubleArray();
+        };
 
         array[count] = number;
         count++;
@@ -58,7 +68,7 @@ public class MyList {
         array[index] = 0; // 0 is by default the empty value
     }
 
-    public int getAtIndex(int index, int number) {
+    public int getAtIndex(int index ) {
         if (isInvalidIndex(index)) throw new ArrayIndexOutOfBoundsException();
 
         return array[index];

@@ -2,22 +2,23 @@ package com.kristianskokars.service;
 
 import com.kristianskokars.datastructures.MyList;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        MyList list = new MyList(5);
-        list.push(11);
-        list.push(9);
-        list.push(2);
-        list.push(4);
-        list.push(6);
-
-        list.sort();
-        System.out.println(list.returnNextElement(11));
-        list.print();
-
-
-        ArrayList<Integer> newList = new ArrayList<>();
+        var list2 = new MyList(2);
+        try {
+            var file = new File("numbers.txt");
+            var reader = new Scanner(file);
+            while (reader.hasNextLine()) {
+                var number = Integer.parseInt(reader.nextLine());
+                list2.push(number);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        list2.print();
     }
 }
