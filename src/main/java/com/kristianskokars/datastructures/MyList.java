@@ -57,7 +57,7 @@ public class MyList {
 
     // TODO: I do not remember if you could do direct [] overloading in Java
     public void addAtIndex(int index, int number) {
-        if (isInvalidIndex(index)) return;
+        if (isInvalidIndex(index) || index > count) return;
 
         array[index] = number;
     }
