@@ -8,97 +8,101 @@ import java.util.Scanner;
 
 public class MainService {
     public static void main(String[] args) throws Exception {
-        var list2 = readFromFile("numbers.txt");
+        var numbersFromFile = readFromFile(getResourcePath("numbers.txt"));
 
         System.out.println("Testing file reading, should be: 1 2 3 4 5 6\nResult: ");
-        list2.print();
+        numbersFromFile.print();
         printDivider();
 
         // isFull
         System.out.println("Testing isFull, should be: false\nResult: ");
-        System.out.println(list2.isFull());
-        list2.print();
+        System.out.println(numbersFromFile.isFull());
+        numbersFromFile.print();
         printDivider();
 
-        list2.push(9);
-        list2.push(9);
+        numbersFromFile.push(9);
+        numbersFromFile.push(9);
 
         System.out.println("Testing isFull, should be: true\nResult: ");
-        System.out.println(list2.isFull());
+        System.out.println(numbersFromFile.isFull());
         printDivider();
 
         // isEmpty
         System.out.println("Testing isEmpty, should be: false\nResult: ");
-        System.out.println(list2.isEmpty());
-        list2.print();
+        System.out.println(numbersFromFile.isEmpty());
+        numbersFromFile.print();
         printDivider();
 
-        list2.clear();
+        numbersFromFile.clear();
 
         // isClear
         System.out.println("Testing isEmpty and if isClear worked, should be: true\nResult: ");
-        System.out.println(list2.isEmpty());
-        list2.print();
+        System.out.println(numbersFromFile.isEmpty());
+        numbersFromFile.print();
         printDivider();
 
         // getCount
         System.out.println("Testing getCount, should be: 0\nResult: ");
-        System.out.println(list2.getCount());
+        System.out.println(numbersFromFile.getCount());
 
-        list2.push(1);
-        list2.push(2);
+        numbersFromFile.push(1);
+        numbersFromFile.push(2);
 
         System.out.println("Testing getCount, should be: 2\nResult: ");
-        System.out.println(list2.getCount());
-        list2.print();
+        System.out.println(numbersFromFile.getCount());
+        numbersFromFile.print();
         printDivider();
 
         // addAtIndex
         System.out.println("Testing addAtIndex, should be: 1 9 2\nResult: ");
-        list2.addAtIndex(1, 9);
-        list2.print();
+        numbersFromFile.addAtIndex(1, 9);
+        numbersFromFile.print();
         printDivider();
 
         // deleteAtIndex
         System.out.println("Testing deleteAtIndex, should be: 1 2\nResult: ");
-        list2.deleteAtIndex(1);
-        list2.print();
+        numbersFromFile.deleteAtIndex(1);
+        numbersFromFile.print();
         printDivider();
 
         // getAtIndex
         System.out.println("Testing getAtIndex, should be: 2\nResult: ");
-        System.out.println(list2.getAtIndex(1));
-        list2.print();
+        System.out.println(numbersFromFile.getAtIndex(1));
+        numbersFromFile.print();
         printDivider();
 
         // findNumber
-        list2.push(4);
-        list2.push(6);
-        list2.push(7);
-        list2.push(3);
-        list2.push(3);
-        list2.push(5);
-        list2.print();
+        numbersFromFile.push(4);
+        numbersFromFile.push(6);
+        numbersFromFile.push(7);
+        numbersFromFile.push(3);
+        numbersFromFile.push(3);
+        numbersFromFile.push(5);
+        numbersFromFile.print();
         System.out.println("Testing findNumber, should be: 5 6\nResult: ");
-        list2.findNumber(3).print();
-        list2.print();
+        numbersFromFile.findNumber(3).print();
+        numbersFromFile.print();
         printDivider();
 
         // returnNextElement
         System.out.println("Testing returnNextElement, should be: 7\nResult: ");
-        System.out.println(list2.returnNextElement(6));
-        list2.print();
+        System.out.println(numbersFromFile.returnNextElement(6));
+        numbersFromFile.print();
         printDivider();
 
         System.out.println("Testing returnNextElement, should be: -1\nResult: ");
-        list2.returnNextElement(2);
-        list2.print();
+        numbersFromFile.returnNextElement(2);
+        numbersFromFile.print();
         printDivider();
 
         // sort
         System.out.println("Testing sort");
-        list2.sort();
-        list2.print();
+        numbersFromFile.sort();
+        numbersFromFile.print();
+    }
+
+    private static String getResourcePath(String resource) {
+        return MainService.class.getClassLoader().getResource(resource).getPath();
     }
 
     private static MyList readFromFile(String path) throws Exception {
@@ -106,7 +110,7 @@ public class MainService {
         var fileList = new MyList();
 
         try {
-            var file = new File("numbers.txt");
+            var file = new File(path);
             var reader = new Scanner(file);
             while (reader.hasNextLine()) {
                 var number = Integer.parseInt(reader.nextLine());
