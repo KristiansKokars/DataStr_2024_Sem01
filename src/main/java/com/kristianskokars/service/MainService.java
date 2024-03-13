@@ -6,19 +6,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Main {
+public class MainService {
     public static void main(String[] args) throws Exception {
-        var list2 = new MyList(2);
-        try {
-            var file = new File("numbers.txt");
-            var reader = new Scanner(file);
-            while (reader.hasNextLine()) {
-                var number = Integer.parseInt(reader.nextLine());
-                list2.push(number);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        var list2 = readFromFile("numbers.txt");
 
         System.out.println("Testing file reading, should be: 1 2 3 4 5 6\nResult: ");
         list2.print();
@@ -109,6 +99,25 @@ public class Main {
         System.out.println("Testing sort");
         list2.sort();
         list2.print();
+    }
+
+    private static MyList readFromFile(String path) throws Exception {
+        if (path == null || path.length() < 3) throw new Exception("File path is invalid");
+        var fileList = new MyList();
+
+        try {
+            var file = new File("numbers.txt");
+            var reader = new Scanner(file);
+            while (reader.hasNextLine()) {
+                var number = Integer.parseInt(reader.nextLine());
+                fileList.push(number);
+            }
+            reader.close();
+            return fileList;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     private static void printDivider() {
